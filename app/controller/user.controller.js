@@ -24,5 +24,36 @@ exports.create = (req, res) => {
           });
         else res.send(data);
       });
+
+      // Retrieve all users from the database (with condition).
+      exports.findAll = (req, res) => {
+        const title = req.query.title;
+      
+        User.getAll(title, (err, data) => {
+          if (err)
+            res.status(500).send({
+              message:
+                err.message || "Some error occurred while retrieving employee details."
+            });
+          else res.send(data);
+        });
+      };
+
+// Find a single user with a id
+exports.findOne = (req, res) => {
+  User.findById(req.params.user_id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found user with id ${req.params.user_id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving user with id " + req.params.user_id
+        });
+      }
+    } else res.send(data);
+  });
+};
     
 };

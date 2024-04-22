@@ -3,8 +3,14 @@ module.exports = app =>{
 
     var router = require("express").Router();
   
-    // Create a new Tutorial
+    // Create a new user
     router.post("/", user.create);
+
+    // Retrieve all user
+    router.get("/", user.findAll);
+
+    // Retrieve a single user with id
+    router.get("/:user_id", user.findOne);
 
     app.use('/api/users', router);
 
