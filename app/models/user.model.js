@@ -75,6 +75,7 @@ const User = function(user) {
     });
   };
 
+<<<<<<< HEAD
   User.updateById = (id, user, result) => {
     sql.query(
       "UPDATE user SET name = ?, email = ?, is_admin = ? WHERE user_id = ?",
@@ -96,5 +97,24 @@ const User = function(user) {
         result(null, { id: id, ...user });
       }
     );
+=======
+  User.remove = (user_id, result) => {
+    sql.query("DELETE FROM User WHERE user_id = ?", user_id, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+  
+      if (res.affectedRows == 0) {
+        // not found User with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+  
+      console.log("deleted User with user_id: ", user_id);
+      result(null, res);
+    });
+>>>>>>> 063ca062c8caa34a82e0b3ac57d52b54e23be834
   };
   module.exports = User;
