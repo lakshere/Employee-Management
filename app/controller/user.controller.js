@@ -1,43 +1,44 @@
 const User = require("../models/user.model");
 
 exports.create = (req, res) => {
-    if (!req.body) {
-        res.status(400).send({
-          message: "Content can not be empty!"
-        });
-      }
-    
-      // Create a User
-      const user = new User({
-        user_id : req.body.user_id,
-        name : req.body.name,
-        email : req.body.email,
-        is_admin : req.body.is_admin  || false,
-      });
-    
-      // Save User in the database
-      User.create(user, (err, data) => {
-        if (err)
-          res.status(500).send({
-            message:
-              err.message || "Some error occurred while creating the User."
-          });
-        else res.send(data);
-      });
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
 
-      // Retrieve all users from the database (with condition).
-      exports.findAll = (req, res) => {
-        const title = req.query.title;
-      
-        User.getAll(title, (err, data) => {
-          if (err)
-            res.status(500).send({
-              message:
-                err.message || "Some error occurred while retrieving employee details."
-            });
-          else res.send(data);
-        });
-      };
+  // Create a User
+  const user = new User({
+    user_id: req.body.user_id,
+    name: req.body.name,
+    email: req.body.email,
+    is_admin: req.body.is_admin || false,
+  });
+
+  // Save User in the database
+  User.create(user, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the User."
+      });
+    else res.send(data);
+  });
+};
+
+// Retrieve all users from the database (with condition).
+exports.findAll = (req, res) => {
+  const title = req.query.title;
+
+  User.getAll(title, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving employee details."
+      });
+    else res.send(data);
+  });
+};
 
 // Find a single user with a id
 exports.findOne = (req, res) => {
@@ -55,5 +56,4 @@ exports.findOne = (req, res) => {
     } else res.send(data);
   });
 };
-    
-};
+

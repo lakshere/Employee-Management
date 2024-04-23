@@ -20,10 +20,27 @@ const User = function(user) {
     });
   };
 
+  // User.getAll((err, res) => {
+  //   let query = "SELECT * FROM user";
+  
+  //   sql.query(query,(err, res)=>{
+  //     if (err) {
+  //       console.log("error: ", err);
+  //       result(null, err);
+  //       return;
+  //     }
+  
+  //     console.log("user: ", res);
+  //     result(null, res);
+  //     return;
+  //   });
+  // });
+
+
   User.getAll = (result) => {
     let query = "SELECT * FROM user";
   
-    sql.query(query, (err, res) => {
+    sql.query(query,(err, res)=>{
       if (err) {
         console.log("error: ", err);
         result(null, err);
@@ -31,7 +48,12 @@ const User = function(user) {
       }
   
       console.log("user: ", res);
-      result(null, res);
+      result(null,res)
+      // result()
+      // return result;
+      // res.json(result)
+      // result(null, res);
+      return;
     });
   };
 
@@ -52,3 +74,4 @@ const User = function(user) {
       result({ kind: "not_found" }, null);
     });
   };
+  module.exports = User;
