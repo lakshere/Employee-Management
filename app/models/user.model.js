@@ -74,4 +74,27 @@ const User = function(user) {
       result({ kind: "not_found" }, null);
     });
   };
+
+  User.updateById = (id, user, result) => {
+    sql.query(
+      "UPDATE user SET name = ?, email = ?, is_admin = ? WHERE user_id = ?",
+      [user.name, user.email,user.is_admin, id],
+      (err, res) => {
+        if (err) {
+          console.log("error: ", err);
+          result(null, err);
+          return;
+        }
+  
+        if (res.affectedRows == 0) {
+          // not found User with the id
+          result({ kind: "not_found" }, null);
+          return;
+        }
+  
+        console.log("updated user: ", { id: id, ...user });
+        result(null, { id: id, ...user });
+      }
+    );
+  };
   module.exports = User;
