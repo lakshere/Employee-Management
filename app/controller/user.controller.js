@@ -30,7 +30,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   const title = req.query.title;
 
-  User.getAll(title, (err, data) => {
+  User.getAll((err, data) => {
     if (err)
       res.status(500).send({
         message:
