@@ -1,41 +1,44 @@
-const CSVfun = function(employees) {
-    // this.employee_id = employees.employee_id;
-    // this.dept = employees.dept;
-    // this.other_details = employees.other_details;   
-    // this.name = employees.name;
-    // this.email = employees.email;
-    
-  };
+const sql = require('./db')
+const { readFile, writeFile } = require('fs').promises;
+const { parseAsync } = require('json2csv');
+
+const CSVfun = function (employees) {
+  // this.employee_id = employees.employee_id;
+  // this.dept = employees.dept;
+  // this.other_details = employees.other_details;   
+  // this.name = employees.name;
+  // this.email = employees.email;
+
+};
 
 
 
-  CSVfun.write = async function (data) {
-
-    sql.query("SELECT e.employee_id,e.name AS employee_name, DATE_FORMAT(a.date, '%Y-%m') AS month,SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END) AS present_count,SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END) AS absent_count FROM  attendance a INNER JOIN 
-    employees e ON a.employee_id = e.employee_id GROUP BY e.employee_id HAVING month='2021-04';", 
-    newemployees, async (err, res) =>{
+CSVfun.write = async function (response,emploee_id,month) {
+  sql.query("SELECT e.employee_id,e.name AS employee_name, DATE_FORMAT(a.date, '%Y-%m') AS month,SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END) AS present_count,SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END) AS absent_count FROM attendance a INNER JOIN employees e ON a.employee_id = e.employee_id GROUP BY e.employee_id HAVING e.employee_id = ? AND month = ?;", [emploee_id, month],
+    async (err, res) => {
+      console.log(res.query)
       if (err) {
         console.log("error: ", err);
         result(err, null);
         return;
       }
+      const data = await JSON.stringify(res)
+      console.log(data)
+      const fields = [
+        "employee_id",
+        "employee_name",
+        "month",
+        "present_count",
+        "absent_count"]
 
-      console.log("created new employees: ", { id: res.insertId, ...newemployees });
-      // result(null, { id: res.insertId, ...newemployees });
-      const jsondata = {...res}
-      /*try {
-        jsondata = JSON.parse(data);
-      } catch (err) {
-        console.log(err);
-      }*/
-
-      const csv = await json2csvAsync(jsondata);
-      await writeFile("csvlatest", csv, 'utf8');
-      
+      parseAsync(data, { fields })
+        .then(async csv => {
+          response.header('Content-Type', 'text/csv');
+          response.attachment("data.csv");
+          return response.send(csv)
+          })
+        .catch(err => console.error(err));
     });
+}
 
-
-
-  }
-  
-  module.exports = CSVfun;
+module.exports = CSVfun;
