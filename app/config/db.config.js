@@ -2,5 +2,5 @@ module.exports = {
     HOST: "localhost",
     USER: "root",
     PASSWORD: null,
-    DB: "test"
+    DB: "test" //Change with your db
   };
