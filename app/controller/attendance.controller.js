@@ -86,20 +86,20 @@ exports.update = (req, res) => {
   );
 };
 
-// exports.delete = (req, res) => {
-//   Attendance.remove(req.params.attendance_id, (err, data) => {
-//     if (err) {
-//       if (err.kind === "not_found") {
-//         res.status(404).send({
-//           message: `Not found attendance with id ${req.params.attendance_id}.`
-//         });
-//       } else {
-//         res.status(500).send({
-//           message: "Could not delete attendance with id " + req.params.attendance_id
-//         });
-//       }
-//     } else res.send({ message: `Attendance was deleted successfully!` });
-//   });
-// };
+exports.delete = (req, res) => {
+  Attendance.remove(req.params.attendance_id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found attendance with id ${req.params.attendance_id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Could not delete attendance with id " + req.params.attendance_id
+        });
+      }
+    } else res.send({ message: `Attendance was deleted successfully!` });
+  });
+};
 
 
