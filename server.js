@@ -34,7 +34,11 @@ app.get("/", async (req, res) => {
 // require("./app/routes/employees.routes")(app);
 // require("./app/routes/attendance.routes")(app);
 // set port, listen for requests
+<<<<<<< HEAD
 const PORT = process.env.PORT || 8079;
+=======
+const PORT = process.env.PORT || 8080;
+>>>>>>> cf6720fd783b1820dd15f9348d2dd47d59a0c37a
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
