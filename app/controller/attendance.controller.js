@@ -3,11 +3,20 @@ const Attendance = require("../models/attendance.model");
 
 // Retrieve all Attendance from the database (with condition).
 exports.findAll = (req, res) => {
+<<<<<<< HEAD
+  const title = req.query.title;
+
+=======
+>>>>>>> cf6720fd783b1820dd15f9348d2dd47d59a0c37a
   Attendance.getAll((err, data) => {
     if (err)
       res.status(500).send({
         message:
+<<<<<<< HEAD
+          err.message || "Some error occurred while retrieving tutorials."
+=======
           err.message || "Some error occurred while retrieving Attendances."
+>>>>>>> cf6720fd783b1820dd15f9348d2dd47d59a0c37a
       });
     else res.send(data);
   });
@@ -15,6 +24,17 @@ exports.findAll = (req, res) => {
 
 // Find a single Attendance with a id
 exports.findOne = (req, res) => {
+<<<<<<< HEAD
+  Attendance.findById(req.params.employee_id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Attendance with id ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Attendance with id " + req.params.id
+=======
   Attendance.findById(req.params.attendance_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
@@ -24,6 +44,7 @@ exports.findOne = (req, res) => {
       } else {
         res.status(500).send({
           message: "Error retrieving Attendance with id " + req.params.attendance_id
+>>>>>>> cf6720fd783b1820dd15f9348d2dd47d59a0c37a
         });
       }
     } else res.send(data);
