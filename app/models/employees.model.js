@@ -1,22 +1,24 @@
 const sql = require('./db')
 
-const User = function(user) {
-    this.user_id = user.user_id;
-    this.name = user.name;
-    this.email = user.email;
-    this.is_admin = user.is_admin;
+const Employees = function(employees) {
+    this.employee_id = employees.employee_id;
+    this.dept = employees.dept;
+    this.other_details = employees.other_details;   
+    this.name = employees.name;
+    this.email = employees.email;
+    
   };
 
-  User.create = (newuser, result) => {
-    sql.query("INSERT INTO user SET ?", newuser, (err, res) => {
+  Employees.create = (newemployees, result) => {
+    sql.query("INSERT INTO employees SET ?", newemployees, (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
         return;
       }
   
-      console.log("created new user: ", { id: res.insertId, ...newuser });
-      result(null, { id: res.insertId, ...newuser });
+      console.log("created new employees: ", { id: res.insertId, ...newemployees });
+      result(null, { id: res.insertId, ...newemployees });
     });
   };
 
@@ -37,8 +39,8 @@ const User = function(user) {
   // });
 
 
-  User.getAll = (result) => {
-    let query = "SELECT * FROM user";
+  Employees.getAll = (result) => {
+    let query = "SELECT * FROM employees";
   
     sql.query(query,(err, res)=>{
       if (err) {
@@ -47,7 +49,7 @@ const User = function(user) {
         return;
       }
   
-      console.log("user: ", res);
+      console.log("employees: ", res);
       result(null,res)
       // result()
       // return result;
@@ -57,8 +59,8 @@ const User = function(user) {
     });
   };
 
-  User.findById = (user_id, result) => {
-    sql.query(`SELECT * FROM user WHERE user_id = ${user_id}`, (err, res) => {
+  Employees.findById = (employee_id, result) => {
+    sql.query(`SELECT * FROM employees WHERE employee_id = ${employee_id}`, (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -75,11 +77,10 @@ const User = function(user) {
     });
   };
 
-<<<<<<< HEAD
-  User.updateById = (id, user, result) => {
+Employees.updateById = (employee_id, employees, result) => {
     sql.query(
-      "UPDATE user SET name = ?, email = ?, is_admin = ? WHERE user_id = ?",
-      [user.name, user.email,user.is_admin, id],
+      "UPDATE employees SET dept = ?, other_details = ?, name = ?, email = ?, WHERE employee_id = ?",
+      [employees.dept, employees.other_details, employees.name, employees.email, employee_id],
       (err, res) => {
         if (err) {
           console.log("error: ", err);
@@ -88,18 +89,19 @@ const User = function(user) {
         }
   
         if (res.affectedRows == 0) {
-          // not found User with the id
+          // not found employee with the id
           result({ kind: "not_found" }, null);
           return;
         }
   
-        console.log("updated user: ", { id: id, ...user });
-        result(null, { id: id, ...user });
+        console.log("updated employees: ", { employee_id: employee_id, ...employees });
+        result(null, { employee_id: employee_id, ...employees });
       }
     );
-=======
-  User.remove = (user_id, result) => {
-    sql.query("DELETE FROM User WHERE user_id = ?", user_id, (err, res) => {
+  }
+
+Employees.remove = (employee_id, result) => {
+    sql.query("DELETE FROM Employees WHERE employee_id = ?", employee_id, (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(null, err);
@@ -107,14 +109,14 @@ const User = function(user) {
       }
   
       if (res.affectedRows == 0) {
-        // not found User with the id
+        // not found Employee with the id
         result({ kind: "not_found" }, null);
         return;
       }
   
-      console.log("deleted User with user_id: ", user_id);
+      console.log("deleted Employees with employee_id: ", employee_id);
       result(null, res);
     });
->>>>>>> 063ca062c8caa34a82e0b3ac57d52b54e23be834
+
   };
-  module.exports = User;
+  module.exports = Employees;
