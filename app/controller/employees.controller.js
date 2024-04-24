@@ -71,7 +71,7 @@ exports.update = (req, res) => {
   console.log(req.body);
 
   Employees.updateById(
-    req.params.id,
+    req.params.employee_id,
     new Employees(req.body),
     (err, data) => {
       if (err) {

@@ -18,6 +18,6 @@ module.exports = app =>{
     // Delete a employee with id
     router.delete("/:employee_id", employees.delete);
 
-    app.use('/api/users', router);
+    app.use('/api/employee', router);
 
 }
