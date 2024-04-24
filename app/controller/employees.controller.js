@@ -72,16 +72,16 @@ exports.update = (req, res) => {
 
   Employees.updateById(
     req.params.id,
-    new Tutorial(req.body),
+    new Employees(req.body),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: `Not found Tutorial with id ${req.params.id}.`
+            message: `Not found employee with id ${req.params.employee_id}.`
           });
         } else {
           res.status(500).send({
-            message: "Error updating Tutorial with id " + req.params.id
+            message: "Error updating employee with id " + req.params.employee_id
           });
         }
       } else res.send(data);

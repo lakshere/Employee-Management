@@ -77,9 +77,9 @@ const Employees = function(employees) {
     });
   };
 
-Employees.updateById = (employee_id, employees, result) => {
+  Employees.updateById = (employee_id, employees, result) => {
     sql.query(
-      "UPDATE employees SET dept = ?, other_details = ?, name = ?, email = ?, WHERE employee_id = ?",
+      "UPDATE employees SET dept = ?, other_details = ?, name = ?, email = ? WHERE employee_id = ?",
       [employees.dept, employees.other_details, employees.name, employees.email, employee_id],
       (err, res) => {
         if (err) {
@@ -99,6 +99,7 @@ Employees.updateById = (employee_id, employees, result) => {
       }
     );
   }
+  
 
 Employees.remove = (employee_id, result) => {
     sql.query("DELETE FROM Employees WHERE employee_id = ?", employee_id, (err, res) => {
