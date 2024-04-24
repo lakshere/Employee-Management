@@ -118,6 +118,5 @@ Employees.remove = (employee_id, result) => {
       console.log("deleted Employees with employee_id: ", employee_id);
       result(null, res);
     });
-
   };
   module.exports = Employees;
