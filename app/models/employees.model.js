@@ -22,23 +22,6 @@ const Employees = function(employees) {
     });
   };
 
-  // User.getAll((err, res) => {
-  //   let query = "SELECT * FROM user";
-  
-  //   sql.query(query,(err, res)=>{
-  //     if (err) {
-  //       console.log("error: ", err);
-  //       result(null, err);
-  //       return;
-  //     }
-  
-  //     console.log("user: ", res);
-  //     result(null, res);
-  //     return;
-  //   });
-  // });
-
-
   Employees.getAll = (result) => {
     let query = "SELECT * FROM employees";
   
@@ -100,7 +83,6 @@ const Employees = function(employees) {
     );
   }
   
-
 Employees.remove = (employee_id, result) => {
     sql.query("DELETE FROM Employees WHERE employee_id = ?", employee_id, (err, res) => {
       if (err) {
@@ -119,4 +101,6 @@ Employees.remove = (employee_id, result) => {
       result(null, res);
     });
   };
+
+  
   module.exports = Employees;

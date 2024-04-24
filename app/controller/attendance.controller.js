@@ -1,4 +1,34 @@
-const Employees = require("../models/attendance.model");
+const Attendance = require("../models/attendance.model");
+
+
+// Retrieve all Attendance from the database (with condition).
+exports.findAll = (req, res) => {
+  Attendance.getAll((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Attendances."
+      });
+    else res.send(data);
+  });
+};
+
+// Find a single Attendance with a id
+exports.findOne = (req, res) => {
+  Attendance.findById(req.params.attendance_id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: "Not found Attendance with id " + req.params.attendance_id
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Attendance with id " + req.params.attendance_id
+        });
+      }
+    } else res.send(data);
+  });
+};
 
 exports.create = (req, res) => {
   if (!req.body) {
@@ -7,49 +37,67 @@ exports.create = (req, res) => {
     });
   }
 
-//Add attendance
 
-app.post('/attendance', (req, res) => {
-  // Extract data from request body
-  const { employee_id, date, status } = req.body;
-
-  // Create a new Attendance object
-  const newAttendance = new Attendance({
-    employee_id,
-    date,
-    status,
+  const attendance = new Attendance({
+    attendance_id: req.body.attendance_id,
+    employee_id: req.body.employee_id,
+    date: req.body.date,
+    status: req.body.status,
   });
-
-  // Save attendance in the database
-  Attendance.create(newAttendance, (err, data) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send({
-        message: err.message || "Some error occurred while adding attendance."
+  //Add attendance
+  Attendance.create(attendance, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the Attendance."
       });
-    }
-
-    console.log("Attendance added successfully:", data);
-    res.status(201).send({ message: "Attendance added successfully!", data }); 
+    else res.send(data);
   });
-});
+  //delete attendance of an employee
+};
 
-//delete attendance of an employee
+// Update a Attendance identified by the id in the request
+exports.update = (req, res) => {
+  // Validate Request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
 
-Attendance.delete(attendanceId, (err, data) => {
+  console.log(req.body);
+
+  Attendance.updateById(
+    req.params.attendance_id,
+    new Attendance(req.body),
+    (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: "Not found Attendance with id ${ req.params.id }."
+          });
+        } else {
+          res.status(500).send({
+            message: "Error updating Attendance with id " + req.params.attendance_id
+          });
+        }
+      } else res.send(data);
+    }
+  );
+};
+
+exports.delete = (req, res) => {
+  Attendance.remove(req.params.attendance_id, (err, data) => {
     if (err) {
-      console.error(err);
-      return res.status(500).send({
-        message: err.message || "Some error occurred while deleting attendance."
-      });
-    }
-
-    if (data.affectedRows === 0) {
-      // Handle case where attendance_id not found
-      return res.status(404).send({ message: `Attendance with ID ${attendanceId} not found.` });
-    }
-
-    console.log("Attendance deleted successfully with ID:", attendanceId);
-    res.send({ message: "Attendance deleted successfully!" });
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found attendance with id ${req.params.attendance_id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Could not delete attendance with id " + req.params.attendance_id
+        });
+      }
+    } else res.send({ message: `Attendance was deleted successfully!` });
   });
 };

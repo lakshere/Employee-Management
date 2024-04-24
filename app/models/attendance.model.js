@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 const sql = require('./db');
 
 const Attendance = function (attendance) {
@@ -10,26 +10,22 @@ const Attendance = function (attendance) {
 
 // Add attendance record
 Attendance.create = (newAttendance, result) => {
-  const sqlQuery = `INSERT INTO attendance (attendence_id, employee_id, date, status)
-                   VALUES (?, ?, ?)`;
-  const values = [newAttendance.attendence_id,newAttendance.employee_id, newAttendance.date, newAttendance.status];
+  const sqlQuery = `INSERT INTO attendance SET ?`;
 
-  sql.query(sqlQuery, values, (err, res) => {
+  sql.query(sqlQuery, newAttendance, (err, res) => {
 
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
-
-<<<<<<< HEAD
-    console.log("Added new attendance record: ", { id: res.insertId, ...newAttendance });
-    result(null, { id: res.insertId, ...newAttendance });
+    console.log("Added new attendance record: ", {...newAttendance });
+    result(null, {...newAttendance });
   });
 };
 
 // Delete attendance record (assuming deletion by attendance_id)
-Attendance.delete = (attendanceId, result) => {
+Attendance.remove = (attendanceId, result) => {
   const sqlQuery = `DELETE FROM attendance WHERE attendance_id = ?`;
   const value = [attendanceId];
 
@@ -46,19 +42,6 @@ Attendance.delete = (attendanceId, result) => {
       console.log("Attendance record deleted with ID:", attendanceId);
       result(null, res);
     }
-  });
-};
-
-module.exports = Attendance;
-=======
-    if (res.length) {
-      console.log("found attendance: ", res[0]);
-      result(null, res[0]);
-      return;
-    }
-
-    // not found Attendance with the id
-    result({ kind: "not_found" }, null);
   });
 };
 
@@ -82,11 +65,10 @@ Attendance.getAll = (result) => {
   });
 };
 
-
-Attendance.updateById = (employee_id, attendance, result) => {
+Attendance.updateById = (attendance_id, attendance, result) => {
   sql.query(
-    "UPDATE attendance SET date = ?, status = ?,attendance_id = ? WHERE employee_id = ?",
-    [attendance.date, attendance.status, attendance.attendance_id, employee_id],
+    "UPDATE attendance SET date = ?, status = ?,employee_id = ? WHERE attendance_id = ?",
+    [attendance.date, attendance.status, attendance.employee_id, attendance_id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -100,15 +82,31 @@ Attendance.updateById = (employee_id, attendance, result) => {
         return;
       }
 
-      console.log("updated attendance: ", { employee_id: employee_id, ...attendance });
-      result(null, { employee_id: employee_id, ...attendance });
+      console.log("updated attendance: ", { attendance_id: attendance_id, ...attendance });
+      result(null, { attendance_id: attendance_id, ...attendance });
     }
   );
 };
 
+Attendance.findById = (attendance_id, result) => {
+  sql.query(`SELECT * FROM attendance WHERE attendance_id = ${attendance_id}`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      result(null, res[0]);
+      return;
+    }
+
+    result({ kind: "not_found" }, null);
+  });
+};
+
 
 module.exports = Attendance;
->>>>>>> 973f93d99cf47d4d6df6111484e4bb65f53cb898
 
 
 

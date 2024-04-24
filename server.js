@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // simple route
-app.get("/", async (req, res) =>  {
+app.get("/", async (req, res) => {
   // const result = await db.query('SELECT * FROM name');
   // await res.json(result.recordset);
   res.json({ message: "Welcome to employee management application." });
@@ -30,7 +30,7 @@ app.get("/", async (req, res) =>  {
 require("./app/routes/employees.routes")(app);
 require("./app/routes/attendance.routes")(app);
 // set port, listen for requests
-const PORT = process.env.PORT || 8076;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
