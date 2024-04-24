@@ -15,6 +15,7 @@ exports.findAll = (req, res) => {
 
 // Find a single Attendance with a id
 exports.findOne = (req, res) => {
+
   Attendance.findById(req.params.attendance_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
@@ -24,6 +25,7 @@ exports.findOne = (req, res) => {
       } else {
         res.status(500).send({
           message: "Error retrieving Attendance with id " + req.params.attendance_id
+
         });
       }
     } else res.send(data);
@@ -101,5 +103,3 @@ exports.delete = (req, res) => {
     } else res.send({ message: `Attendance was deleted successfully!` });
   });
 };
-
-
