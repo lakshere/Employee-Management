@@ -9,16 +9,31 @@ const CSVfun = function(employees) {
 
 
 
-  CSVfun.write = async function (fileName, data) {
-   const jsondata = {}
-    try {
+  CSVfun.write = async function (data) {
+
+    sql.query("INSERT INTO employees SET ?", newemployees, async (err, res) =>{
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log("created new employees: ", { id: res.insertId, ...newemployees });
+      // result(null, { id: res.insertId, ...newemployees });
+      const jsondata = {...res}
+      try {
         jsondata = JSON.parse(data);
       } catch (err) {
         console.log(err);
       }
-   
-    const csv = await json2csvAsync(jsondata);
-    await writeFile(fileName, csv, 'utf8');
+
+      const csv = await json2csvAsync(jsondata);
+      await writeFile("csvlatest", csv, 'utf8');
+      
+    });
+
+
+
   }
   
   module.exports = CSVfun;
