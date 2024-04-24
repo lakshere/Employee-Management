@@ -20,7 +20,7 @@ connection.connect(error => {
 
 // TEST FUNCTION
 fun = async () => {
-  const result = await connection.query('SELECT * FROM user', (err, res) => {
+  const result = await connection.query('SELECT * FROM employees', (err, res) => {
     if (res.length) {
       console.log(res[0]);
       return;

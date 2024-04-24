@@ -1,4 +1,4 @@
-const User = require("../models/user.model");
+const Employees = require("../models/employees.model");
 
 exports.create = (req, res) => {
   if (!req.body) {
@@ -7,30 +7,31 @@ exports.create = (req, res) => {
     });
   }
 
-  // Create a User
-  const user = new User({
-    user_id: req.body.user_id,
+  // Create an employee
+  const employees = new Employees({
+    employee_id: req.body.employee_id,
+    dept: req.body.dept,
+    other_details: req.body.other_details,
     name: req.body.name,
     email: req.body.email,
-    is_admin: req.body.is_admin || false,
   });
 
-  // Save User in the database
-  User.create(user, (err, data) => {
+  // Save employee in the database
+  Employees.create(employees, (err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the User."
+          err.message || "Some error occurred while creating the Employee."
       });
     else res.send(data);
   });
 };
 
-// Retrieve all users from the database (with condition).
+// Retrieve all employees from the database (with condition).
 exports.findAll = (req, res) => {
   const title = req.query.title;
 
-  User.getAll((err, data) => {
+  Employees.getAll((err, data) => {
     if (err)
       res.status(500).send({
         message:
@@ -40,25 +41,25 @@ exports.findAll = (req, res) => {
   });
 };
 
-// Find a single user with a id
+// Find a single employee with a id
 exports.findOne = (req, res) => {
-  User.findById(req.params.user_id, (err, data) => {
+  Employees.findById(req.params.employee_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found user with id ${req.params.user_id}.`
+          message: `Not found employee with id ${req.params.employee_id}.`
         });
       } else {
         res.status(500).send({
-          message: "Error retrieving user with id " + req.params.user_id
+          message: "Error retrieving employee with id " + req.params.employee_id
         });
       }
     } else res.send(data);
   });
 };
 
-<<<<<<< HEAD
-//Update a single user with an id
+
+// Update a single employee with a id
 exports.update = (req, res) => {
   // Validate Request
   if (!req.body) {
@@ -69,40 +70,43 @@ exports.update = (req, res) => {
 
   console.log(req.body);
 
-  User.updateById(
+  Employees.updateById(
     req.params.id,
-    new User(req.body),
+    new Tutorial(req.body),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: `Not found User with id ${req.params.id}.`
+            message: `Not found Tutorial with id ${req.params.id}.`
           });
         } else {
           res.status(500).send({
-            message: "Error updating User with id " + req.params.id
+            message: "Error updating Tutorial with id " + req.params.id
           });
         }
       } else res.send(data);
     }
   );
 };
-=======
+
+
 // Delete a user with the specified id in the request
 exports.delete = (req, res) => {
-  User.remove(req.params.user_id, (err, data) => {
+  Employees.remove(req.params.employee_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found User with user_id ${req.params.user_id}.`
+          message: `Not found employee with id ${req.params.employee_id}.`
         });
       } else {
         res.status(500).send({
-          message: "Could not delete User with id " + req.params.user_id
+          message: "Could not delete employee with id " + req.params.employee_id
         });
       }
-    } else res.send({ message: `User was deleted successfully!` });
+    } else res.send({ message: `Employee was deleted successfully!` });
   });
 };
 
->>>>>>> 063ca062c8caa34a82e0b3ac57d52b54e23be834
+
+
+
