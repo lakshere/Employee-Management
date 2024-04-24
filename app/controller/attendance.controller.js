@@ -1,65 +1,55 @@
-const Attendance = require("../models/attendance.model");
+const Employees = require("../models/attendance.model");
 
-
-
-// Retrieve all Attendance from the database (with condition).
-exports.findAll = (req, res) => {
-    const title = req.query.title;
-
-    Attendance.getAll((err, data) => {
-      if (err)
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving tutorials."
-        });
-      else res.send(data);
-    });
-};
-
-// Find a single Attendance with a id
-exports.findOne = (req, res) => {
-    Attendance.findById(req.params.employee_id, (err, data) => {
-        if (err) {
-          if (err.kind === "not_found") {
-            res.status(404).send({
-              message: `Not found Attendance with id ${req.params.id}.`
-            });
-          } else {
-            res.status(500).send({
-              message: "Error retrieving Attendance with id " + req.params.id
-            });
-          }
-        } else res.send(data);
-      });
-};
-
-
-// Update a Attendance identified by the id in the request
-exports.update = (req, res) => {
-  // Validate Request
+exports.create = (req, res) => {
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
   }
 
-  console.log(req.body);
+//Add attendance
 
-  Attendance.updateById(
-    req.params.employee_id,
-    new Attendance(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found Attendance with id ${req.params.id}.`
-          });
-        } else {
-          res.status(500).send({
-            message: "Error updating Attendance with id " + req.params.id
-          });
-        }
-      } else res.send(data);
+app.post('/attendance', (req, res) => {
+  // Extract data from request body
+  const { employee_id, date, status } = req.body;
+
+  // Create a new Attendance object
+  const newAttendance = new Attendance({
+    employee_id,
+    date,
+    status,
+  });
+
+  // Save attendance in the database
+  Attendance.create(newAttendance, (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send({
+        message: err.message || "Some error occurred while adding attendance."
+      });
     }
-  );
+
+    console.log("Attendance added successfully:", data);
+    res.status(201).send({ message: "Attendance added successfully!", data }); 
+  });
+});
+
+//delete attendance of an employee
+
+Attendance.delete(attendanceId, (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send({
+        message: err.message || "Some error occurred while deleting attendance."
+      });
+    }
+
+    if (data.affectedRows === 0) {
+      // Handle case where attendance_id not found
+      return res.status(404).send({ message: `Attendance with ID ${attendanceId} not found.` });
+    }
+
+    console.log("Attendance deleted successfully with ID:", attendanceId);
+    res.send({ message: "Attendance deleted successfully!" });
+  });
 };
