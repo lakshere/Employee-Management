@@ -28,7 +28,7 @@ app.get("/", async (req, res) =>  {
 });
 
 require("./app/routes/employees.routes")(app);
-
+require("./app/routes/attendance.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8076;
 app.listen(PORT, () => {
