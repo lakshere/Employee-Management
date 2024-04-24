@@ -31,25 +31,19 @@ app.get("/", async (req, res) => {
   res.json({ message: "Welcome to employee management application." });
 });
 
-<<<<<<< HEAD
+
 require("./app/routes/employees.routes")(app);
 
 require("./app/routes/attendance.routes")(app);
-=======
+
 
 // require("./app/routes/employees.routes")(app);
 // require("./app/routes/attendance.routes")(app);
->>>>>>> 66d077b9eae4ebecdff4cc7cc3703433f1a6853a
-// set port, listen for requests
-<<<<<<< HEAD
-const PORT = process.env.PORT || 8079;
-=======
-const PORT = process.env.PORT || 8080;
-<<<<<<< HEAD
 
-=======
->>>>>>> cf6720fd783b1820dd15f9348d2dd47d59a0c37a
->>>>>>> 66d077b9eae4ebecdff4cc7cc3703433f1a6853a
+// set port, listen for requests
+
+const PORT = process.env.PORT || 8080;
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
