@@ -1,9 +1,14 @@
 const sql = require('./db');
+const currentDate = new Date();
+const year = currentDate.getFullYear();
+const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+const day = String(currentDate.getDate()).padStart(2, '0');
 
+// const formattedDate = `${year}-${month}-${day}`;
 const Attendance = function (attendance) {
   this.attendance_id = attendance.attendance_id;
   this.employee_id = attendance.employee_id;
-  this.date = Date.now();
+  this.date = `${year}-${month}-${day}`;
   this.status = attendance.status; 
 };
 
