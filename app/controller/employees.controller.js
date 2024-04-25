@@ -86,14 +86,22 @@ exports.update = (req, res) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
+            status: res.statusCode,
             message: `Not found employee with id ${req.params.employee_id}.`
           });
         } else {
+          if (typeof req.params.employee_id === 'string' || req.params.employee_id instanceof String){
+            res.status(500).send({
+              status: res.statusCode,
+              message: "employee_id must be a number"
+            });
+          }
+          
           res.status(500).send({
             message: "Error updating employee with id " + req.params.employee_id
           });
         }
-      } else res.send(data);
+      } else res.send({ status: res.statusCode ,result:data });
     }
   );
 };
