@@ -6,10 +6,11 @@ exports.findAll = (req, res) => {
   Attendance.getAll((err, data) => {
     if (err)
       res.status(500).send({
+        status: res.statusCode,
         message:
           err.message || "Some error occurred while retrieving Attendances."
       });
-    else res.send(data);
+      else res.send({status: res.statusCode, result: data });
   });
 };
 
@@ -17,18 +18,29 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
 
   Attendance.findById(req.params.attendance_id, (err, data) => {
+    console.log("printing data")
+    console.log(data)
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
+          status: res.statusCode,
           message: "Not found Attendance with id " + req.params.attendance_id
         });
       } else {
+        if(isNaN(req.params.attendance_id))
+        {
+          res.status(500).send({
+            status: res.statusCode,
+            message: "attendance_id must be a number"
+          });
+        } else{
         res.status(500).send({
           message: "Error retrieving Attendance with id " + req.params.attendance_id
 
         });
       }
-    } else res.send(data);
+      }
+    } else res.send({ status: res.statusCode, result: data});
   });
 };
 
@@ -53,7 +65,7 @@ exports.create = (req, res) => {
         message:
           err.message || "Some error occurred while creating the Attendance."
       });
-    else res.send(data);
+      else res.send({status: res.statusCode, result: data });
   });
   //delete attendance of an employee
 };
@@ -74,16 +86,25 @@ exports.update = (req, res) => {
     new Attendance(req.body),
     (err, data) => {
       if (err) {
-        if (err.kind === "not_found") {
+        
+         console.log(isNaN("req.params.attendance_id54345"))
+         if (isNaN(req.params.attendance_id)) {
+          res.status(500).send({
+            status: res.statusCode,
+            message: "attendance_id must be a number"
+          });
+        }
+        else if (err.kind === "not_found") {
           res.status(404).send({
-            message: "Not found Attendance with id ${ req.params.id }."
+            status: res.statusCode,
+            message: "Not found Attendance with id " +req.params.attendance_id 
           });
         } else {
           res.status(500).send({
             message: "Error updating Attendance with id " + req.params.attendance_id
           });
         }
-      } else res.send(data);
+      } else res.send({status: res.statusCode, result: data });
     }
   );
 };
