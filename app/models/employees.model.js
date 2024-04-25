@@ -17,8 +17,8 @@ const Employees = function(employees) {
         return;
       }
   
-      console.log("created new employees: ", { id: res.insertId, ...newemployees });
-      result(null, { id: res.insertId, ...newemployees });
+      console.log("created new employees: ", {...newemployees });
+      result(null, {...newemployees });
     });
   };
 
