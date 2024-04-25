@@ -49,10 +49,10 @@ const Employees = function(employees) {
         result(err, null);
         return;
       }
-  
+
       if (res.length) {
         console.log("found employee: ", res[0]);
-        result(null, res[0]);
+        result(null, {...res[0]});
         return;
       }
   

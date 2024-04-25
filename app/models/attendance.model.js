@@ -3,7 +3,7 @@ const sql = require('./db');
 const Attendance = function (attendance) {
   this.attendance_id = attendance.attendance_id;
   this.employee_id = attendance.employee_id;
-  this.date = attendance.date;
+  this.date = Date.now();
   this.status = attendance.status; 
 };
 
