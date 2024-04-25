@@ -58,10 +58,12 @@ exports.findOne = (req, res) => {
             status: res.statusCode,
             message: "employee_id must be a number"
           });
+        }else{
+          res.status(500).send({
+            message: "Error retrieving employee with id " + req.params.employee_id
+          });
         }
-        res.status(500).send({
-          message: "Error retrieving employee with id " + req.params.employee_id
-        });
+       
       }
     } else res.send({ status: res.statusCode ,result:data });
   });
