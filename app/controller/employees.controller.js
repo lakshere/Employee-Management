@@ -127,10 +127,19 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   Employees.remove(req.params.employee_id, (err, data) => {
     if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Not found employee with id ${req.params.employee_id}.`
-        });
+      console.log(isNaN("req.params.employee_id54345"))
+        if (isNaN(req.params.employee_id)) {
+          res.status(500).send({
+            status: res.statusCode,
+            message: "employee_id must be a number"
+          });
+        }
+        else if (err.kind === "not_found") {
+          res.status(404).send({
+            status: res.statusCode,
+            message: `Not found employee with id ${req.params.employee_id}.`
+          });
+      
       } else {
         res.status(500).send({
           message: "Could not delete employee with id " + req.params.employee_id

@@ -67,7 +67,7 @@ exports.create = (req, res) => {
       });
       else res.send({status: res.statusCode, result: data });
   });
-  //delete attendance of an employee
+  
 };
 
 // Update a Attendance identified by the id in the request
@@ -112,10 +112,18 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   Attendance.remove(req.params.attendance_id, (err, data) => {
     if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Not found attendance with id ${req.params.attendance_id}.`
-        });
+      console.log(isNaN("req.params.attendance_id54345"))
+         if (isNaN(req.params.attendance_id)) {
+          res.status(500).send({
+            status: res.statusCode,
+            message: "attendance_id must be a number"
+          });
+        }
+        else if (err.kind === "not_found") {
+          res.status(404).send({
+            status: res.statusCode,
+            message: "Not found Attendance with id " +req.params.attendance_id 
+          });
       } else {
         res.status(500).send({
           message: "Could not delete attendance with id " + req.params.attendance_id
